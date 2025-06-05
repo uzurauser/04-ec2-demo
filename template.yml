@@ -1,0 +1,47 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: EC2 + Node.js ToDo App (Amazon Linux 2023)
+Resources:
+  TodoInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro
+      ImageId: ami-0c55b159cbfafe1f0
+      SecurityGroups: [todoSecurityGroup]
+      IamInstanceProfile: EC2SSMInstanceProfile
+      UserData:
+        Fn::Base64: |
+          #!/bin/bash
+          dnf install -y nodejs git
+          git clone https://github.com/scotch-io/node-todo.git /home/ec2-user/todo
+          cd /home/ec2-user/todo
+          npm install
+          npm install -g pm2
+          pm2 start server.js
+
+  todoSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow port 8080
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 8080
+          ToPort: 8080
+          CidrIp: 0.0.0.0/0
+
+  EC2SSMInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles: [EC2SSMRole]
+
+  EC2SSMRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore

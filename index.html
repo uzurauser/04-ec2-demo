@@ -1,195 +1,140 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>EC2</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEMO</title>
     <style>
-      body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-          Helvetica, Arial, sans-serif;
-        line-height: 1.6;
-        color: #333;
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 20px;
-      }
-      h1,
-      h2,
-      h3,
-      h4,
-      h5,
-      h6 {
-        margin-top: 24px;
-        margin-bottom: 16px;
-        font-weight: 600;
-        line-height: 1.25;
-      }
-      h1 {
-        font-size: 2em;
-        border-bottom: 1px solid #eaecef;
-        padding-bottom: 0.3em;
-      }
-      h2 {
-        font-size: 1.5em;
-        border-bottom: 1px solid #eaecef;
-        padding-bottom: 0.3em;
-      }
-      pre {
-        background-color: #f6f8fa;
-        border-radius: 6px;
-        padding: 16px;
-        overflow: auto;
-      }
-      code {
-        background-color: rgba(27, 31, 35, 0.05);
-        border-radius: 3px;
-        font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo,
-          monospace;
-        font-size: 85%;
-        margin: 0;
-        padding: 0.2em 0.4em;
-      }
-      pre > code {
-        background-color: transparent;
-        padding: 0;
-      }
-      a {
-        color: #0366d6;
-        text-decoration: none;
-      }
-      a:hover {
-        text-decoration: underline;
-      }
-      img {
-        max-width: 100%;
-      }
-      .highlight pre,
-      pre {
-        margin-bottom: 16px;
-      }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 24px;
+            margin-bottom: 16px;
+            font-weight: 600;
+            line-height: 1.25;
+        }
+        h1 { font-size: 2em; border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+        h2 { font-size: 1.5em; border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 6px;
+            padding: 16px;
+            overflow: auto;
+        }
+        code {
+            background-color: rgba(27, 31, 35, 0.05);
+            border-radius: 3px;
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 85%;
+            margin: 0;
+            padding: 0.2em 0.4em;
+        }
+        pre > code {
+            background-color: transparent;
+            padding: 0;
+        }
+        a { color: #0366d6; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        img { max-width: 100%; }
+        .highlight pre, pre {
+            margin-bottom: 16px;
+        }
     </style>
-  </head>
-  <body>
-    <h1 id="saas-db-erd">SaaS DB ERD</h1>
-    <h2 id="erd">ERD 　（出来上がり）</h2>
-    <p><img alt="ERD" src="./image/saas_db_erd.png" /></p>
-    <h2 id="erd_1">ERD の作成手順</h2>
-    <h3 id="1">1. 起点となる資料</h3>
-    <p><img src="./image/saas_excel.png" alt="Source" style="width: 60%" /></p>
-    <h3 id="2">2. 資料から、登場人物と関係性を洗い出し、一旦文章で表現する</h3>
-    <ul>
-      <li>
-        <h3 id="client-can-hire-service_vendor">
-          <u>client</u> can hire <u>service_vendor</u>
-        </h3>
-      </li>
-      <li>
-        <h3 id="client-can-outsource-tasks-to-contractor">
-          <u>client</u> can outsource tasks to <u>contractor</u>
-        </h3>
-      </li>
-      <li>
-        <h3 id="client-can-contract-with-service_vendor-for-outsourcing">
-          <u>client</u> can contract with <u>service_vendor</u> for outsourcing
-        </h3>
-      </li>
-      <li>
-        <h3 id="service_vendor-can-hire-cloud_services_providers">
-          <u>service_vendor</u> can hire <u>cloud_services_providers</u>
-        </h3>
-      </li>
-      <li>
-        <h3 id="contractor-can-hire-service_vendor">
-          <u>contractor</u> can hire <u>service_vendor</u>
-        </h3>
-      </li>
-      <li>
-        <h3 id="service_vendor-provides-cloud_services">
-          <u>service_vendor</u> provides <u>cloud_services</u>
-        </h3>
-      </li>
-      <li>
-        <h3 id="cloud_services_provider-can-use-other-cloud_services_providers">
-          <u>cloud_services_provider</u> can use other
-          <u>cloud_services_providers</u>
-        </h3>
-      </li>
-    </ul>
-    <h3 id="3-entity-table">
-      3. 文章のなかから、Entity 　に着目して、Table を決定
-    </h3>
-    <ul>
-      <li>
-        <h3 id="client">client</h3>
-      </li>
-      <li>
-        <h3 id="service_vendor">service_vendor</h3>
-      </li>
-      <li>
-        <h3 id="contractor">contractor</h3>
-      </li>
-      <li>
-        <h3 id="cloud_services_provider">cloud_services_provider</h3>
-      </li>
-      <li>
-        <h3 id="cloud_services">cloud_services</h3>
-      </li>
-    </ul>
-    <h3 id="4-erd">
-      4. 上記のモデルとリレーションをコーディングし、ERD を出力する
-    </h3>
-    <pre><code class="language-mermaid">// title
-SaasDB Data Model
-
-// define tables
-client [icon: user, color: red] {
-  client_id int pk
-  client_name string
-}
-
-service_vendors [icon: users, color: orange] {
-  vendor_id int pk
-  vendor_name string
-  client_id int fk
-  has_outsource_agreement bool
-  created_at TIMESTAMP
-}
-
-cloud_services [icon: cloud, color: yellow] {
-  service_id int pk
-  service_name string
-  service_vendor_id int fk
-  is_check_common_required bool
-  is_check_detail_required bool
-  created_at TIMESTAMP
-}
-
-cloud_service_providers[icon: users, color: green] {
-  csp_id int pk
-  csp_name string
-  service_vendor_id int fk
-  is_check_common_required bool
-  is_check_detail_required bool
-  created_at TIMESTAMP
-}
-
-contractors [icon: users] {
-  contractor_id int pk
-  contractor_name string
-  client_id int fk
-}
-
-// define relationships
-client.client_id &lt; service_vendors.client_id
-client.client_id &lt; contractors.client_id
-
-service_vendors.vendor_id &lt; cloud_service_providers.service_vendor_id
-
-contractors.contractor_id &lt; service_vendors.vendor_id
-
-service_vendors.vendor_id  &lt; cloud_services.service_vendor_id
-
+</head>
+<body>
+<h1 id="aws-ec2">AWS デモ：EC2</h1>
+<h2 id="612">📚 6/12 やったこと</h2>
+<h3 id="1-ec2">1. EC2 インスタンスへの接続</h3>
+<ul>
+<li>Instance Connect での接続</li>
+<li>SSH での接続</li>
+<li>Session Manager での接続</li>
+</ul>
+<h4 id="session-manager-connect">Session Manager での接続は、今回同期されるまでに時間がかかりましたが、一旦同期されると以下のように connect ボタンが活性化されます</h4>
+<p><img src="asset/ssm-connect.png" alt="SSM Session Manager での接続" style="width: 30%;"></p>
+<h4 id="session-manager">参考：　少し古い記事ですが、Session Manager での接続方法については以下も参照してください</h4>
+<p>https://dev.classmethod.jp/articles/ec2-access-with-session-manager/</p>
+<p><br />
+<br />
+<br /></p>
+<h2 id="69">📚 復習：　 6/9 やったこと</h2>
+<h3 id="1">1. 下記の構成で、</h3>
+<ul>
+<li>VPC を作成</li>
+<li>Public Subnet に EC2 インスタンスを作成、起動</li>
+<li>ローカルマシンから、インスタンスに接続</li>
+</ul>
+<p><img alt="アーキテクチャ図" src="asset/arch.png" /></p>
+<h3 id="2-aws">2. 実際の AWS マネジメントコンソール上で見たリソース配置はこうです</h3>
+<p><img alt="実際のAWSマネジメントコンソール上のリソース配置" src="asset/vpc.png" /></p>
+<h3 id="3">3. インスタンスへの接続は以下の方法があります</h3>
+<ul>
+<li>本日は、Instance Connect のみ実施した</li>
+<li>Session Manager が推奨（一番安全）</li>
+<li>SSH、RDP は、セキュリティで劣る。昔ながらのやり方</li>
+</ul>
+<p><img src="asset/ec2-connect.png" alt="実際のAWSマネジメントコンソール上のリソース配置" style="width: 80%;"></p>
+<h2 id="_1">🎯 内容</h2>
+<p>EC2 インスタンスの作成、セキュアな接続、アプリケーション起動までを実施します。</p>
+<h2 id="aws">🧱 使用する AWS サービス</h2>
+<ul>
+<li>Amazon EC2</li>
+<li>Amazon EC2 Security Group</li>
+<li>AWS Systems Manager</li>
+<li>AWS CloudFormation</li>
+</ul>
+<hr />
+<h2 id="_2">🗂️ 構成概要</h2>
+<pre><code>+------------------------+
+|       EC2 Instance     |
+|------------------------|
+|  OS: Amazon Linux 2023 |
+|  Node.js + Git         |
+|  Port: 8080 Open       |
++------------------------+
+         ↑
+         |（SSM Session Manager 経由で接続）
 </code></pre>
-  </body>
+<hr />
+<h2 id="_3">🚀 デプロイ手順</h2>
+<h3 id="1-cloudformation">1. CloudFormation スタックを作成</h3>
+<ul>
+<li>AWS マネジメントコンソール → CloudFormation → 「スタックの作成」</li>
+<li>テンプレートファイル（<code>template.yml</code>）をアップロードする</li>
+<li>デフォルト設定のまま作成</li>
+</ul>
+<h3 id="2-ec2">2. EC2 インスタンスが起動したら確認</h3>
+<ul>
+<li>EC2 → インスタンス一覧 → インスタンス が <code>running</code> になっていること</li>
+</ul>
+<h3 id="3-systems-manager">3. Systems Manager から接続</h3>
+<ul>
+<li>Systems Manager → セッションマネージャー → セッションの開始</li>
+<li>該当インスタンスを選択して接続</li>
+</ul>
+<h3 id="4-web">4. Web アクセスでアプリを表示</h3>
+<p>インスタンスの <strong>パブリック IP アドレス</strong> を確認し、ブラウザで以下にアクセス：</p>
+<pre><code>http://&lt;EC2のパブリックIP&gt;:8080
+</code></pre>
+<hr />
+<h2 id="_4">🧼 クリーンアップ</h2>
+<ul>
+<li>CloudFormation → スタックを選択 → 削除</li>
+<li>すべてのリソースが自動で削除されます</li>
+</ul>
+<hr />
+<h2 id="_5">参考</h2>
+<ul>
+<li><a href="https://docs.aws.amazon.com/linux/al2023/ug/">Amazon Linux 2023 公式ドキュメント</a></li>
+<li><a href="https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html">Systems Manager セッションマネージャー</a></li>
+<li><a href="https://github.com/scotch-io/node-todo">Scotch.io Node ToDo App GitHub</a></li>
+</ul>
+<hr />
+</body>
 </html>

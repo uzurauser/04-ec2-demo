@@ -1,5 +1,25 @@
 # AWS デモ：EC2
 
+## 📚 6/12 やったこと
+
+### 1. EC2 インスタンスへの接続
+
+- Instance Connect での接続
+- SSH での接続
+- Session Manager での接続
+
+#### Session Manager での接続は、今回同期されるまでに時間がかかりましたが、一旦同期されると以下のように connect ボタンが活性化されます
+
+<img src="asset/ssm-connect.png" alt="SSM Session Manager での接続" style="width: 30%;">
+
+#### 参考：　少し古い記事ですが、Session Manager での接続方法については以下も参照してください
+
+https://dev.classmethod.jp/articles/ec2-access-with-session-manager/
+
+<br />
+<br />
+<br />
+
 ## 📚 復習：　 6/9 やったこと
 
 ### 1. 下記の構成で、

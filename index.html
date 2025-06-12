@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EC2</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        margin-top: 24px;
+        margin-bottom: 16px;
+        font-weight: 600;
+        line-height: 1.25;
+      }
+      h1 {
+        font-size: 2em;
+        border-bottom: 1px solid #eaecef;
+        padding-bottom: 0.3em;
+      }
+      h2 {
+        font-size: 1.5em;
+        border-bottom: 1px solid #eaecef;
+        padding-bottom: 0.3em;
+      }
+      pre {
+        background-color: #f6f8fa;
+        border-radius: 6px;
+        padding: 16px;
+        overflow: auto;
+      }
+      code {
+        background-color: rgba(27, 31, 35, 0.05);
+        border-radius: 3px;
+        font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo,
+          monospace;
+        font-size: 85%;
+        margin: 0;
+        padding: 0.2em 0.4em;
+      }
+      pre > code {
+        background-color: transparent;
+        padding: 0;
+      }
+      a {
+        color: #0366d6;
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      img {
+        max-width: 100%;
+      }
+      .highlight pre,
+      pre {
+        margin-bottom: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id="saas-db-erd">SaaS DB ERD</h1>
+    <h2 id="erd">ERD 　（出来上がり）</h2>
+    <p><img alt="ERD" src="./image/saas_db_erd.png" /></p>
+    <h2 id="erd_1">ERD の作成手順</h2>
+    <h3 id="1">1. 起点となる資料</h3>
+    <p><img src="./image/saas_excel.png" alt="Source" style="width: 60%" /></p>
+    <h3 id="2">2. 資料から、登場人物と関係性を洗い出し、一旦文章で表現する</h3>
+    <ul>
+      <li>
+        <h3 id="client-can-hire-service_vendor">
+          <u>client</u> can hire <u>service_vendor</u>
+        </h3>
+      </li>
+      <li>
+        <h3 id="client-can-outsource-tasks-to-contractor">
+          <u>client</u> can outsource tasks to <u>contractor</u>
+        </h3>
+      </li>
+      <li>
+        <h3 id="client-can-contract-with-service_vendor-for-outsourcing">
+          <u>client</u> can contract with <u>service_vendor</u> for outsourcing
+        </h3>
+      </li>
+      <li>
+        <h3 id="service_vendor-can-hire-cloud_services_providers">
+          <u>service_vendor</u> can hire <u>cloud_services_providers</u>
+        </h3>
+      </li>
+      <li>
+        <h3 id="contractor-can-hire-service_vendor">
+          <u>contractor</u> can hire <u>service_vendor</u>
+        </h3>
+      </li>
+      <li>
+        <h3 id="service_vendor-provides-cloud_services">
+          <u>service_vendor</u> provides <u>cloud_services</u>
+        </h3>
+      </li>
+      <li>
+        <h3 id="cloud_services_provider-can-use-other-cloud_services_providers">
+          <u>cloud_services_provider</u> can use other
+          <u>cloud_services_providers</u>
+        </h3>
+      </li>
+    </ul>
+    <h3 id="3-entity-table">
+      3. 文章のなかから、Entity 　に着目して、Table を決定
+    </h3>
+    <ul>
+      <li>
+        <h3 id="client">client</h3>
+      </li>
+      <li>
+        <h3 id="service_vendor">service_vendor</h3>
+      </li>
+      <li>
+        <h3 id="contractor">contractor</h3>
+      </li>
+      <li>
+        <h3 id="cloud_services_provider">cloud_services_provider</h3>
+      </li>
+      <li>
+        <h3 id="cloud_services">cloud_services</h3>
+      </li>
+    </ul>
+    <h3 id="4-erd">
+      4. 上記のモデルとリレーションをコーディングし、ERD を出力する
+    </h3>
+    <pre><code class="language-mermaid">// title
+SaasDB Data Model
+
+// define tables
+client [icon: user, color: red] {
+  client_id int pk
+  client_name string
+}
+
+service_vendors [icon: users, color: orange] {
+  vendor_id int pk
+  vendor_name string
+  client_id int fk
+  has_outsource_agreement bool
+  created_at TIMESTAMP
+}
+
+cloud_services [icon: cloud, color: yellow] {
+  service_id int pk
+  service_name string
+  service_vendor_id int fk
+  is_check_common_required bool
+  is_check_detail_required bool
+  created_at TIMESTAMP
+}
+
+cloud_service_providers[icon: users, color: green] {
+  csp_id int pk
+  csp_name string
+  service_vendor_id int fk
+  is_check_common_required bool
+  is_check_detail_required bool
+  created_at TIMESTAMP
+}
+
+contractors [icon: users] {
+  contractor_id int pk
+  contractor_name string
+  client_id int fk
+}
+
+// define relationships
+client.client_id &lt; service_vendors.client_id
+client.client_id &lt; contractors.client_id
+
+service_vendors.vendor_id &lt; cloud_service_providers.service_vendor_id
+
+contractors.contractor_id &lt; service_vendors.vendor_id
+
+service_vendors.vendor_id  &lt; cloud_services.service_vendor_id
+
+</code></pre>
+  </body>
+</html>

@@ -1,5 +1,115 @@
 # AWS デモ：EC2
 
+## 📚 6/16 やったこと
+
+<br/>
+
+## 🌐 EC2 + Apache を使った簡単な Web サーバーデモ
+
+---
+
+## 🎯 デモの目的
+
+- AWS EC2 に接続して Web サーバーを立ち上げる
+- シンプルな HTML ページを表示して「見える化」
+
+---
+
+## 🧱 構成概要
+
+- EC2: Amazon Linux 2023 など
+- Apache HTTP サーバー
+- HTML/CSS/JS: `/var/www/html/index.html`
+- SSM: AWS Systems Manager 経由で接続（SSH 不要）
+
+---
+
+## 🔧 ステップ 1: EC2 に接続する
+
+SSM 経由でインスタンスに接続：
+
+```bash
+aws ssm start-session \
+  --target i-xxxxxxxxxxxxxxxxx \
+  --profile us-east-1 \
+  --region us-east-1
+```
+
+## ステップ 2: Apache のインストール
+
+```bash
+dnf install -y httpd
+
+sudo systemctl start httpd
+sudo systemctl enable httpd
+
+# HTML を設置
+sudo tee /var/www/html/index.html > /dev/null <<'EOF'
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EC2 デモページ</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #ffffff;
+      color: #222;
+      text-align: center;
+      padding: 5rem;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    h1 {
+      font-size: 2.5rem;
+    }
+    p {
+      font-size: 1.25rem;
+    }
+    button {
+      margin-top: 2rem;
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      background-color: #333;
+      color: white;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #555;
+    }
+    .dark-mode {
+      background-color: #222;
+      color: #ddd;
+    }
+  </style>
+</head>
+<body>
+  <h1>EC2 デモページ</h1>
+  <p>これはデモです。</p>
+  <button onclick="toggleDarkMode()">ダークモード切替</button>
+  <script>
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+    }
+  </script>
+</body>
+</html>
+EOF
+```
+
+🌐 ステップ 3: ブラウザで確認
+
+ブラウザで以下にアクセス：
+
+```
+http://<EC2のパブリックIP>:80
+```
+
+<br />
+
 ## 📚 6/12 やったこと
 
 ### 1. EC2 インスタンスへの接続
@@ -58,15 +168,17 @@ EC2 インスタンスの作成、セキュアな接続、アプリケーショ�
 ## 🗂️ 構成概要
 
 ```
+
 +------------------------+
-|       EC2 Instance     |
+| EC2 Instance |
 |------------------------|
-|  OS: Amazon Linux 2023 |
-|  Node.js + Git         |
-|  Port: 8080 Open       |
+| OS: Amazon Linux 2023 |
+| Node.js + Git |
+| Port: 8080 Open |
 +------------------------+
-         ↑
-         |（SSM Session Manager 経由で接続）
+↑
+|（SSM Session Manager 経由で接続）
+
 ```
 
 ---
@@ -93,7 +205,9 @@ EC2 インスタンスの作成、セキュアな接続、アプリケーショ�
 インスタンスの **パブリック IP アドレス** を確認し、ブラウザで以下にアクセス：
 
 ```
-http://<EC2のパブリックIP>:8080
+
+http://<EC2 のパブリック IP>:8080
+
 ```
 
 ---
@@ -112,3 +226,7 @@ http://<EC2のパブリックIP>:8080
 - [Scotch.io Node ToDo App GitHub](https://github.com/scotch-io/node-todo)
 
 ---
+
+```
+
+```

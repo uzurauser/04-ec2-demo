@@ -49,8 +49,100 @@
 </head>
 <body>
 <h1 id="aws-ec2">AWS デモ：EC2</h1>
+<h2 id="616">📚 6/16 やったこと</h2>
+<p><br/></p>
+<h2 id="ec2-apache-web">🌐 EC2 + Apache を使った簡単な Web サーバーデモ</h2>
+<hr />
+<h2 id="_1">🎯 デモの目的</h2>
+<ul>
+<li>AWS EC2 に接続して Web サーバーを立ち上げる</li>
+<li>シンプルな HTML ページを表示して「見える化」</li>
+</ul>
+<hr />
+<h2 id="_2">🧱 構成概要</h2>
+<ul>
+<li>EC2: Amazon Linux 2023 など</li>
+<li>Apache HTTP サーバー</li>
+<li>HTML/CSS/JS: <code>/var/www/html/index.html</code></li>
+<li>SSM: AWS Systems Manager 経由で接続（SSH 不要）</li>
+</ul>
+<hr />
+<h2 id="1-ec2">🔧 ステップ 1: EC2 に接続する</h2>
+<p>SSM 経由でインスタンスに接続：</p>
+<pre><code class="language-bash">aws ssm start-session \
+  --target i-xxxxxxxxxxxxxxxxx \
+  --profile us-east-1 \
+  --region us-east-1
+</code></pre>
+<h2 id="2-apache">ステップ 2: Apache のインストール</h2>
+<pre><code class="language-bash">dnf install -y httpd
+
+sudo systemctl start httpd
+sudo systemctl enable httpd
+
+# HTML を設置
+sudo tee /var/www/html/index.html &gt; /dev/null &lt;&lt;'EOF'
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ja&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+  &lt;title&gt;EC2 デモページ&lt;/title&gt;
+  &lt;style&gt;
+    body {
+      font-family: sans-serif;
+      background-color: #ffffff;
+      color: #222;
+      text-align: center;
+      padding: 5rem;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    h1 {
+      font-size: 2.5rem;
+    }
+    p {
+      font-size: 1.25rem;
+    }
+    button {
+      margin-top: 2rem;
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      background-color: #333;
+      color: white;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #555;
+    }
+    .dark-mode {
+      background-color: #222;
+      color: #ddd;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;EC2 デモページ&lt;/h1&gt;
+  &lt;p&gt;これはデモです。&lt;/p&gt;
+  &lt;button onclick=&quot;toggleDarkMode()&quot;&gt;ダークモード切替&lt;/button&gt;
+  &lt;script&gt;
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+    }
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+EOF
+</code></pre>
+<p>🌐 ステップ 3: ブラウザで確認</p>
+<p>ブラウザで以下にアクセス：</p>
+<pre><code>http://&lt;EC2のパブリックIP&gt;:80
+</code></pre>
+<p><br /></p>
 <h2 id="612">📚 6/12 やったこと</h2>
-<h3 id="1-ec2">1. EC2 インスタンスへの接続</h3>
+<h3 id="1-ec2_1">1. EC2 インスタンスへの接続</h3>
 <ul>
 <li>Instance Connect での接続</li>
 <li>SSH での接続</li>
@@ -80,7 +172,7 @@
 <li>SSH、RDP は、セキュリティで劣る。昔ながらのやり方</li>
 </ul>
 <p><img src="asset/ec2-connect.png" alt="実際のAWSマネジメントコンソール上のリソース配置" style="width: 80%;"></p>
-<h2 id="_1">🎯 内容</h2>
+<h2 id="_3">🎯 内容</h2>
 <p>EC2 インスタンスの作成、セキュアな接続、アプリケーション起動までを実施します。</p>
 <h2 id="aws">🧱 使用する AWS サービス</h2>
 <ul>
@@ -90,19 +182,21 @@
 <li>AWS CloudFormation</li>
 </ul>
 <hr />
-<h2 id="_2">🗂️ 構成概要</h2>
-<pre><code>+------------------------+
-|       EC2 Instance     |
-|------------------------|
-|  OS: Amazon Linux 2023 |
-|  Node.js + Git         |
-|  Port: 8080 Open       |
+<h2 id="_4">🗂️ 構成概要</h2>
+<pre><code>
 +------------------------+
-         ↑
-         |（SSM Session Manager 経由で接続）
+| EC2 Instance |
+|------------------------|
+| OS: Amazon Linux 2023 |
+| Node.js + Git |
+| Port: 8080 Open |
++------------------------+
+↑
+|（SSM Session Manager 経由で接続）
+
 </code></pre>
 <hr />
-<h2 id="_3">🚀 デプロイ手順</h2>
+<h2 id="_5">🚀 デプロイ手順</h2>
 <h3 id="1-cloudformation">1. CloudFormation スタックを作成</h3>
 <ul>
 <li>AWS マネジメントコンソール → CloudFormation → 「スタックの作成」</li>
@@ -120,21 +214,25 @@
 </ul>
 <h3 id="4-web">4. Web アクセスでアプリを表示</h3>
 <p>インスタンスの <strong>パブリック IP アドレス</strong> を確認し、ブラウザで以下にアクセス：</p>
-<pre><code>http://&lt;EC2のパブリックIP&gt;:8080
+<pre><code>
+http://&lt;EC2 のパブリック IP&gt;:8080
+
 </code></pre>
 <hr />
-<h2 id="_4">🧼 クリーンアップ</h2>
+<h2 id="_6">🧼 クリーンアップ</h2>
 <ul>
 <li>CloudFormation → スタックを選択 → 削除</li>
 <li>すべてのリソースが自動で削除されます</li>
 </ul>
 <hr />
-<h2 id="_5">参考</h2>
+<h2 id="_7">参考</h2>
 <ul>
 <li><a href="https://docs.aws.amazon.com/linux/al2023/ug/">Amazon Linux 2023 公式ドキュメント</a></li>
 <li><a href="https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html">Systems Manager セッションマネージャー</a></li>
 <li><a href="https://github.com/scotch-io/node-todo">Scotch.io Node ToDo App GitHub</a></li>
 </ul>
 <hr />
+<pre><code>
+</code></pre>
 </body>
 </html>

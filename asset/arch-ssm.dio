@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="COQ47SoL2lrhfvE6HqJA" name="Page-1">
-        <mxGraphModel dx="1390" dy="433" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1169" pageHeight="1654" background="#ffffff" math="0" shadow="0">
+        <mxGraphModel dx="1462" dy="752" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1169" pageHeight="1654" background="#ffffff" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -31,12 +31,6 @@
                 <mxCell id="13" value="Internet&#10;gateway" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=#232F3E;fillColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.internet_gateway;" parent="1" vertex="1">
                     <mxGeometry x="650" y="235" width="60" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="31" style="edgeStyle=none;html=1;entryX=0;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;strokeColor=#4D4D4D;fontSize=14;fontColor=#4D4D4D;startArrow=classic;startFill=1;" parent="1" source="10" target="19" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="10" value="" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;gradientColor=#F78E04;gradientDirection=north;fillColor=#D05C17;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.ec2;" parent="1" vertex="1">
-                    <mxGeometry x="460" y="245" width="40" height="40" as="geometry"/>
-                </mxCell>
                 <mxCell id="18" value="" style="edgeStyle=none;html=1;strokeColor=#4D4D4D;entryX=1;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" target="19" edge="1">
                     <mxGeometry relative="1" as="geometry">
                         <mxPoint x="802" y="300" as="sourcePoint"/>
@@ -57,14 +51,14 @@
                 <mxCell id="20" value="" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;gradientColor=#F78E04;gradientDirection=north;fillColor=#D05C17;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.ec2;" parent="1" vertex="1">
                     <mxGeometry x="460" y="374" width="40" height="40" as="geometry"/>
                 </mxCell>
-                <mxCell id="21" value="SSH-DEMO" style="text;strokeColor=none;align=center;fillColor=none;html=1;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#4D4D4D;" parent="1" vertex="1">
-                    <mxGeometry x="425" y="286" width="110" height="30" as="geometry"/>
-                </mxCell>
                 <mxCell id="22" value="&lt;h2 style=&quot;line-height: 22px; -webkit-font-smoothing: antialiased; margin-block: 5px 0px; padding-block: 0px; padding-inline: 0px; color: rgb(15, 20, 26); font-family: &amp;quot;Amazon Ember&amp;quot;, &amp;quot;Helvetica Neue&amp;quot;, Roboto, Arial, sans-serif; text-align: start; font-size: 14px;&quot; id=&quot;split-panel-header14-1749998189690-3171&quot; class=&quot;awsui_header-text_1r9lg_6tvbw_398 awsui_header-text_rjqu5_zu8o5_6&quot;&gt;&lt;span style=&quot;font-weight: normal; font-size: 14px;&quot;&gt;&lt;font style=&quot;font-size: 14px;&quot;&gt;ssm-managed-for-proxy&lt;/font&gt;&lt;/span&gt;&lt;/h2&gt;" style="text;strokeColor=none;align=center;fillColor=none;html=1;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#4D4D4D;labelBackgroundColor=none;fontSize=14;" parent="1" vertex="1">
                     <mxGeometry x="397.5" y="414" width="165" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="32" value="mysql -h localhost -P 13306 -u admin -p" style="text;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="32" value="mysql -h localhost -P 13306 -u admin -p" style="text;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="-70" y="30" width="250" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="33" value="" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#4D27AA;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.endpoint;" vertex="1" parent="1">
+                    <mxGeometry x="590" y="374" width="40" height="40" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>

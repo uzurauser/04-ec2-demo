@@ -1,5 +1,57 @@
 # AWS デモ：EC2
 
+## 📚 6/19 やったこと
+
+## ポートフォワーディングによるデータベースへのアクセス
+
+![arch-ssm](asset/arch-ssm.png)
+
+## 注意点
+
+1. ec2 インスタンスに直接サインインして、db に接続することはできない
+
+- EC2 インスタンスに SSM で接続（サインイン）することはできる
+
+```bash
+aws ssm start-session \
+  --target i-XXXXXXXX \
+  --profile us-east-1
+```
+
+- しかし、mysql には接続できない。なぜなら、ec2 インスタンスには、mysql のクライアントがインストールされていない
+- たとえ、mysql のクライアントをインストールしようとしても、ec2 インスタンスは privatete subnet にあるため、インターネット経由でレポジトリにアクセスできないため
+
+```bash
+# これはできない
+mysql -h XXXXXXXXXXX.rds.amazonaws.com -u admin -p
+```
+
+2. ポートフォワーディングを使って、ローカルの mysql クライアントを使って db を操作すること
+
+- ポートフォワーディングのセッションを開始する
+
+```bash
+aws ssm start-session \
+  --profile us-east-1 \
+  --target i-XXXXXXXX \
+  --document-name AWS-StartPortForwardingSessionToRemoteHost \
+  --parameters '{"host":["XXXXXXXXXXXX.amazonaws.com"],"portNumber":["3306"],"localPortNumber":["13306"]}'
+```
+
+- 新しいターミナルウィンドウを開く
+- ローカルの mysql クライアントを使って db を操作する
+
+```bash
+mysql -h localhost -P 13306 -u admin -p
+
+SELECT cycle_id, cycle_name, client_name, vendor_name, vendor_service_name, checklist_type, status, status_jp, completed_at
+FROM vw_checklist_progress
+WHERE cycle_id = '2025H1'
+ORDER BY client_name, vendor_name, vendor_service_name;
+```
+
+<br/>
+
 ## 📚 6/16 やったこと
 
 <br/>
